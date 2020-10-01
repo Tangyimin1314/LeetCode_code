@@ -1,0 +1,22 @@
+//Solution 1
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if(x<0|| (x % 10 == 0 && x != 0))return false;
+        if(x<10)return true;
+        int num[15];
+        int length=-1;
+        while(x!=0){
+            num[++length]=x%10;
+            x=x/10;
+        }
+
+        for(int min=0,max=length;max>=min;max--,min++){
+            if(num[min]!=num[max])
+                return false;
+        }
+        return true;
+    }
+};
+//Solution 2 use convert int to string ,it is sample
+
