@@ -1,0 +1,32 @@
+//Solution 1
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int length=0;
+        int size=nums.size();
+        for(int i=0;i<size;i++){
+            if(nums[i]!=val){
+                nums[length++]=nums[i];
+            }
+        }
+        return length;
+    }
+};
+
+//Solution 2 there have two point,one from head to last,one from last to front,when them is adjust ,is end.
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int len=0,last=nums.size();
+        while(last>len){
+            if(nums[len]==val){
+                nums[len]=nums[last-1];
+                last--;
+            }else{
+                len++;
+            }
+        }
+
+        return len;
+    }
+};
