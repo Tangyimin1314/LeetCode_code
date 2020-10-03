@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool isValid(string s) {
+        if(s.length()%2!=0)return false;
+        stack<char> sk;
+        for(int i=0;i<s.length();i++){
+            if(s[i]=='('||s[i]=='{'||s[i]=='['){
+                sk.push(s[i]);
+            }
+            else{
+                if(sk.size()<1)return false;
+                switch(s[i]){
+                    case ')':if(sk.top()!='(')return false;break;
+                    case '}':if(sk.top()!='{')return false;break;
+                    case ']':if(sk.top()!='[')return false;break;
+                }
+                sk.pop();
+            }
+        }
+        if(!sk.empty())return false;
+        return true;
+    }
+};
