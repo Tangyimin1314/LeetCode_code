@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+            int ans=0;
+            auto iter=digits.end();
+            while(iter!=digits.begin()){
+                if(*(--iter)!=9){
+                    *(iter)+=1;
+                    return digits;
+                }else{
+                    ans=1;
+                    *(iter)=0;
+                }
+            }
+            //全是9，需要扩充长度，让第一个为1，其余的为0
+        vector<int> digit(digits.size()+1);
+        digit[0]=1;
+        return digit;
+    }
+
+};
