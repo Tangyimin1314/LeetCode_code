@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int romanToInt(string s) {
+        int result=0,index=0;
+        for(;index<s.length();){
+            if(maps2.find(s.substr(index,2))!=maps2.end()){
+                result+=maps2.at(s.substr(index,2));
+                index+=2;
+            }else{
+                result+=maps1.at(s.substr(index,1));
+                ++index;
+            }
+        }
+        return result;
+    }
+private:
+        map<string,int> maps2={{"IV", 4}, {"IX", 9}, {"XL", 40}, {"XC", 90}, {"CD", 400}, {"CM", 900}};
+        map<string,int> maps1={{"I", 1}, {"V", 5}, {"X", 10},{"L", 50}, {"C", 100}, {"D", 500}, {"M", 1000}};
+};
