@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int lengthOfLastWord(string s) {
+        int index=s.length()-1,num=0;
+        //先处理末尾的空格
+        for(;index>=0;--index){
+            if(' '!=s.at(index))break;
+        }
+        if(index==-1)return 0;
+        //从最后一个非空格的字符向前找空格
+        int i=index;
+        for(;i>=0;--i){
+            if(s[i]==' ')return index-i;
+        }
+        return index+1;
+    }
+};
