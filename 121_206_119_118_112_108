@@ -1,0 +1,226 @@
+108将有序数组转换为二叉搜索树
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        return helper(nums, 0, nums.size() - 1);
+    }
+
+    TreeNode* helper(vector<int>& nums, int left, int right) {
+        if (left > right) {
+            return nullptr;
+        }
+
+    
+        int mid = (left + right) / 2;
+
+        TreeNode* root = new TreeNode(nums[mid]);
+        root->left = helper(nums, left, mid - 1);
+        root->right = helper(nums, mid + 1, right);
+        return root;
+    }
+};
+
+112路径总和
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int sum) {
+        if(root==nullptr)return false;
+        if(root->left==nullptr&&root->right==nullptr)
+            return sum==root->val;
+        return hasPathSum(root->left,sum-root->val)||hasPathSum(root->right,sum-root->val);
+    }
+};
+//改变节点的值拿来存路径值
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int sum) {
+        if(root==NULL)return false;
+        TreeNode *p=root;
+        queue<TreeNode *>q;
+        q.push(p);
+        while(!q.empty()){
+            p=q.front();
+            q.pop();
+            if(p->left==NULL&&p->right==NULL){
+                if(p->val==sum)return true;
+            }else{
+                if(p->left){
+                    q.push(p->left);
+                    p->left->val=p->left->val+p->val;
+                }
+                if(p->right){
+                    q.push(p->right);
+                    p->right->val=p->right->val+p->val;
+                }
+            }
+        }
+        return false;
+    }
+};
+//不改变节点的值用新队列同步来存路径值
+class Solution {
+public:
+    bool hasPathSum(TreeNode *root, int sum) {
+        if (root == nullptr) {
+            return false;
+        }
+        queue<TreeNode *> que_node;
+        queue<int> que_val;
+        que_node.push(root);
+        que_val.push(root->val);
+        while (!que_node.empty()) {
+            TreeNode *now = que_node.front();
+            int temp = que_val.front();
+            que_node.pop();
+            que_val.pop();
+            if (now->left == nullptr && now->right == nullptr) {
+                if (temp == sum) return true;
+                continue;
+            }
+            if (now->left != nullptr) {
+                que_node.push(now->left);
+                que_val.push(now->left->val + temp);
+            }
+            if (now->right != nullptr) {
+                que_node.push(now->right);
+                que_val.push(now->right->val + temp);
+            }
+        }
+        return false;
+    }
+};
+118杨辉三角
+class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> result(numRows);
+        for(int i=0;i<numRows;++i){
+            result[i].resize(i+1);
+            result[i][0]=result[i][i]=1;
+            for(int j=1;j<i;++j){
+                result[i][j]=result[i-1][j]+result[i-1][j-1];
+            }
+        }
+        return result;
+    }
+};
+
+119杨辉三角 II
+class Solution {
+public:
+    vector<int> getRow(int rowIndex) {
+        vector<int> result;
+
+        vector<int> temp;
+        for(int i=0;i<=rowIndex;++i){
+            result.resize(i+1);
+            result[0]=result[i]=1;
+            for(int j=1;j<i;++j){
+                result[j]=temp[j]+temp[j-1];
+            }
+            temp=result;
+        }
+        return result;
+    }
+};
+
+class Solution {
+public:
+    vector<int> getRow(int rowIndex) {
+        vector<int> result;
+        int left,right;
+        for(int i=0;i<=rowIndex;++i){
+            result.resize(i+1);
+            result[0]=result[i]=1;
+            left=1;
+            for(int j=1;j<i;++j){
+                right=result[j];
+                result[j]=left+right;
+                left=right;
+            }
+        }
+        return result;
+    }
+};
+
+206 反转链表
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+//注意这里的递归方法
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head==NULL||head->next==NULL)return head;
+        ListNode *p= reverseList(head->next);
+        head->next->next=head;
+        head->next=NULL;
+        return p;
+    }
+};
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode * p;
+        ListNode * pnext=head;
+        head=NULL;
+        while(pnext!=NULL){
+            p=pnext;
+            pnext=pnext->next;
+            p->next=head;
+            head=p;
+        }
+        return head;
+    }
+};
+121买卖股票的最佳时机
+//超时方法
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int maxs=0;
+        int n=prices.size();
+        for(int i=0;i<n;++i){
+            for(int j=i+1;j<n;++j){
+                maxs=max(maxs,prices[j]-prices[i]);
+            }
+        }
+        return maxs;
+    }
+};
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int inf = 1e9;
+        int minprice = inf, maxprofit = 0;
+        for (int price: prices) {
+            maxprofit = max(maxprofit, price - minprice);
+            minprice = min(price, minprice);
+        }
+        return maxprofit;
+    }
+};
